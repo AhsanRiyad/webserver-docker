@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+
+  #Nginx Service
+  webserver:
+    image: nginx:1.21.3
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:80"
+      - "4430:443"
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+
+  nginxproxymanager:
+    image: 'jc21/nginx-proxy-manager:github-pr-2312'
+    restart: unless-stopped
+    ports:
+      - '8022:80'
+      - '8122:81'
+      - '4432:443'
+    volumes:
+      - ./nginxproxymanager:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    ports:
+      - 9222:9000
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+    external: true
+#Volumes
+volumes:
+  dbdata:
+    driver: local
