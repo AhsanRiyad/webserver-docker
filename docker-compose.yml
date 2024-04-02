@@ -16,15 +16,24 @@ services:
       - app-network
 
   nginxproxymanager:
-    image: 'jc21/nginx-proxy-manager:github-pr-2312'
+    image: 'jc21/nginx-proxy-manager:github-pr-2312' #proxy manager image
     restart: unless-stopped
-    ports:
-      - '8022:80'
-      - '8122:81'
-      - '4432:443'
+    container_name: nginxproxymanager
+    # ports:
+    #   - '880:80'
+    #   - '8122:81' #enternal and external port
+    #   - '8443:443'
     volumes:
-      - ./nginxproxymanager:/data
+      - ./nginxproxymanager:/data  #mount volume local machine to docker conatiner
       - ./letsencrypt:/etc/letsencrypt
+      - ./html:/etc/html
+    network_mode: host
+    # networks:
+    #   - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "raspberry.pi4:192.168.0.198"
+
 
 
   portainer:
