@@ -2,19 +2,20 @@ version: '3.7'
 services:
 
   #Nginx Service
-  webserver:
-    image: nginx:1.21.3
-    container_name: webserver
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "8000:80"
-      - "4430:443"
-    volumes:
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - app-network
-
+  # webserver:
+  #   image: nginx:1.21.3
+  #   container_name: webserver
+  #   restart: unless-stopped
+  #   tty: true
+  #   ports:
+  #     - "8000:80"
+  #     - "4430:443"
+  #   volumes:
+  #     - ./nginx/conf.d/:/etc/nginx/conf.d/
+  #   networks:
+  #     - app-network
+# Email:    admin@example.com
+# Password: changeme
   nginxproxymanager:
     image: 'jc21/nginx-proxy-manager:github-pr-2312' #proxy manager image
     restart: unless-stopped
@@ -36,18 +37,18 @@ services:
 
 
 
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./portainer-data:/data
-    ports:
-      - 9222:9000
+  # portainer:
+  #   image: portainer/portainer-ce:latest
+  #   container_name: portainer
+  #   restart: unless-stopped
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - ./portainer-data:/data
+  #   ports:
+  #     - 9222:9000
 
 #Docker Networks
 networks:
